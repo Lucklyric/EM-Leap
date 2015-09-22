@@ -30,7 +30,7 @@ void MyClass::takeSnapShoot(){
 	pugi::xml_node frameNode = doc.append_child("Leap");
 	pugi::xml_node emNode = doc.append_child("EM");
 	m_leapHandler->frame(frameNode);
-
+	m_emHandler->getDynamicRecording(emNode);
 	std::stringstream sstm;
 	sstm << "snap_" << snapIndex << ".xml";
 	doc.save_file(sstm.str().c_str());

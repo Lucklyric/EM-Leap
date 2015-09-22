@@ -2,6 +2,7 @@
 
 #include <QDateTime>
 #include <QThread>
+#include <iostream>
 
 #define FPS 5
 
@@ -135,7 +136,7 @@ void* DR::EMHandler::thread_connect()
 
 	m_connected = true;
 
-
+	if (m_connected) std::cout << "[EM]:Connected" << std::endl;
 
 	m_lock.unlock();
 

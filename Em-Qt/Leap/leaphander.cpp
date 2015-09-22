@@ -7,11 +7,11 @@ SampleListener::SampleListener(){
 }
 
 void SampleListener::onInit(const Controller& controller) {
-	std::cout << "Initialized" << std::endl;
+	std::cout << "[Leap]:Initialized" << std::endl;
 }
 
 void SampleListener::onConnect(const Controller& controller) {
-	std::cout << "Connected" << std::endl;
+	std::cout << "[Leap]:Connected" << std::endl;
 	controller.enableGesture(Gesture::TYPE_CIRCLE);
 	controller.enableGesture(Gesture::TYPE_KEY_TAP);
 	controller.enableGesture(Gesture::TYPE_SCREEN_TAP);
@@ -20,14 +20,14 @@ void SampleListener::onConnect(const Controller& controller) {
 
 void SampleListener::onDisconnect(const Controller& controller) {
 	// Note: not dispatched when running in a debugger.
-	std::cout << "Disconnected" << std::endl;
+	std::cout << "[Leap]:Disconnected" << std::endl;
 	m_lock.lock();
 	is_connected = true;
 	m_lock.unlock();
 }
 
 void SampleListener::onExit(const Controller& controller) {
-	std::cout << "Exited" << std::endl;
+	std::cout << "[Leap]:Exited" << std::endl;
 }
 
 void SampleListener::onFrame(const Controller& controller) {
@@ -37,11 +37,11 @@ void SampleListener::onFrame(const Controller& controller) {
 	m_lock.unlock();
 }
 void SampleListener::onServiceConnect(const Controller& controller) {
-	std::cout << "Service Connected" << std::endl;
+	std::cout << "[Leap]:Service Connected" << std::endl;
 }
 
 void SampleListener::onServiceDisconnect(const Controller& controller) {
-	std::cout << "Service Disconnected" << std::endl;
+	std::cout << "[Leap]:Service Disconnected" << std::endl;
 }
 
 LeapHander::LeapHander(QObject *parent)
@@ -96,6 +96,14 @@ void LeapHander::frame(pugi::xml_node &frameNode){
 		const Hand hand = *hl;
 		pugi::xml_node handNode = handList.append_child("hand");
 		handNode.append_attribute("id").set_value(hand.id());
+		std::string handType;
+		if (hand.isLeft) {
+			handType = "Left";
+		}
+		else {
+			handType = "Right";
+		}
+		handNode.append_attribute("type").set_value(handType.c_str());
 		
 		pugi::xml_node positionNode = handNode.append_child("position");
 		positionToXml(positionNode, hand.palmPosition());
