@@ -136,7 +136,7 @@ void* DR::EMHandler::thread_connect()
 
 	m_connected = true;
 
-	if (m_connected) std::cout << "[EM]:Connected" << std::endl;
+	if (m_connected) printf("[EM]:Connected\n");
 
 	m_lock.unlock();
 
@@ -145,8 +145,8 @@ void* DR::EMHandler::thread_connect()
 
 void DR::EMHandler::connect()
 {
-
 	int rc;
+	printf("[EM]:Start Connect..\n");
 	rc = pthread_create(&m_thread, NULL, connectThread, (void *)this);
 	if (rc){
 		printf("ERROR; return code from pthread_create() is %d\n", rc);

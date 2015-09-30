@@ -7,11 +7,11 @@ SampleListener::SampleListener(){
 }
 
 void SampleListener::onInit(const Controller& controller) {
-	std::cout << "[Leap]:Initialized" << std::endl;
+	printf("[Leap]:Initialized\n");
 }
 
 void SampleListener::onConnect(const Controller& controller) {
-	std::cout << "[Leap]:Connected" << std::endl;
+	printf("[Leap]:Connected\n");
 	controller.enableGesture(Gesture::TYPE_CIRCLE);
 	controller.enableGesture(Gesture::TYPE_KEY_TAP);
 	controller.enableGesture(Gesture::TYPE_SCREEN_TAP);
@@ -27,7 +27,8 @@ void SampleListener::onDisconnect(const Controller& controller) {
 }
 
 void SampleListener::onExit(const Controller& controller) {
-	std::cout << "[Leap]:Exited" << std::endl;
+	//std::cout << "[Leap]:Exited" << std::endl;
+	printf("[Leap]:Exited\n");
 }
 
 void SampleListener::onFrame(const Controller& controller) {
@@ -37,11 +38,13 @@ void SampleListener::onFrame(const Controller& controller) {
 	m_lock.unlock();
 }
 void SampleListener::onServiceConnect(const Controller& controller) {
-	std::cout << "[Leap]:Service Connected" << std::endl;
+	//std::cout << "[Leap]:Service Connected" << std::endl;
+	printf("[Leap]:Service Connected\n");
 }
 
 void SampleListener::onServiceDisconnect(const Controller& controller) {
-	std::cout << "[Leap]:Service Disconnected" << std::endl;
+	//std::cout << "[Leap]:Service Disconnected" << std::endl;
+	printf("[Leap]:Service Disconnected\n");
 }
 
 LeapHander::LeapHander(QObject *parent)
@@ -97,7 +100,7 @@ void LeapHander::frame(pugi::xml_node &frameNode){
 		pugi::xml_node handNode = handList.append_child("hand");
 		handNode.append_attribute("id").set_value(hand.id());
 		std::string handType;
-		if (hand.isLeft) {
+		if (hand.isLeft()) {
 			handType = "Left";
 		}
 		else {
