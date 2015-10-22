@@ -72,20 +72,35 @@ void LeapHander::positionToXml(pugi::xml_node &node,Leap::Vector position) {
 }
 
 void LeapHander::rotationToXml(pugi::xml_node &node, Leap::Matrix rotation) {
-	float m00, m01, m02, m10, m11, m12, m20, m21, m22;
-	m00 = rotation.xBasis.x; m01 = rotation.yBasis.x; m02 = rotation.zBasis.x;
-	m10 = rotation.xBasis.y; m11 = rotation.yBasis.y; m12 = rotation.zBasis.y;
-	m20 = rotation.xBasis.z; m21 = rotation.yBasis.z; m22 = rotation.zBasis.z;
-	float w = sqrtf(1.0 + m00 + m11 + m22);
-	double w4 = (4 * w);
-	float x = (m21 - m12) / w4;
-	float y = (m02 - m20) / w4;
-	float z = (m10 - m01) / w4;
-	node.append_attribute("W").set_value(w);
+	//float m00, m01, m02, m10, m11, m12, m20, m21, m22;
+	//m00 = rotation.xBasis.x; m01 = rotation.yBasis.x; m02 = rotation.zBasis.x;
+	//m10 = rotation.xBasis.y; m11 = rotation.yBasis.y; m12 = rotation.zBasis.y;
+	//m20 = rotation.xBasis.z; m21 = rotation.yBasis.z; m22 = rotation.zBasis.z;
+	//float w = sqrtf(1.0 + m00 + m11 + m22);
+	//double w4 = (4 * w);
+	//float x = (m21 - m12) / w4;
+	//float y = (m02 - m20) / w4;
+	//float z = (m10 - m01) / w4;
+	/*node.append_attribute("W").set_value(w);
 	node.append_attribute("X").set_value(x);
 	node.append_attribute("Y").set_value(y);
-	node.append_attribute("Z").set_value(z);
+	node.append_attribute("Z").set_value(z);*/
+	pugi::xml_node xBasis = node.append_child("xBasis");
+	xBasis.append_attribute("x").set_value(rotation.xBasis.x);
+	xBasis.append_attribute("y").set_value(rotation.xBasis.y);
+	xBasis.append_attribute("z").set_value(rotation.xBasis.z);
+
+	pugi::xml_node yBasis = node.append_child("yBasis");
+	yBasis.append_attribute("x").set_value(rotation.yBasis.x);
+	yBasis.append_attribute("y").set_value(rotation.yBasis.y);
+	yBasis.append_attribute("z").set_value(rotation.yBasis.z);
+
+	pugi::xml_node zBasis = node.append_child("zBasis");
+	zBasis.append_attribute("x").set_value(rotation.zBasis.x);
+	zBasis.append_attribute("y").set_value(rotation.zBasis.y);
+	zBasis.append_attribute("z").set_value(rotation.zBasis.z);
 }
+
 
 void LeapHander::frame(pugi::xml_node &frameNode){
 	Leap::Frame currentFrame = m_sampleListener.frame();
@@ -117,7 +132,7 @@ void LeapHander::frame(pugi::xml_node &frameNode){
 		pugi::xml_node directionNode = handNode.append_child("direction");
 		positionToXml(directionNode, hand.direction());
 
-		pugi::xml_node rotationNode = handNode.append_child("biasis");
+		pugi::xml_node rotationNode = handNode.append_child("basis");
 		rotationToXml(rotationNode, hand.basis());
 		//// Get fingers
 		pugi::xml_node fingerList = handNode.append_child("fingers");
@@ -144,7 +159,7 @@ void LeapHander::frame(pugi::xml_node &frameNode){
 				pugi::xml_node nextJoint = boneNode.append_child("nextJoint");
 				positionToXml(nextJoint, bone.nextJoint());
 
-				pugi::xml_node rotation = boneNode.append_child("biasis");
+				pugi::xml_node rotation = boneNode.append_child("basis");
 				rotationToXml(rotation, bone.basis());
 			}
 		}

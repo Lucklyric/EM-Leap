@@ -180,7 +180,7 @@ void DR::EMHandler::disconnect()
 	if (errorCode != BIRD_ERROR_SUCCESS) errorHandler(errorCode);
 
 	//  Free memory allocations before exiting
-	//
+	
 	delete[] pSensor;
 	delete[] pXmtr;
 
