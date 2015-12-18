@@ -134,6 +134,22 @@ void* DR::EMHandler::thread_connect()
 		}
 	}
 
+	printf("Seting Sensor Parameter\n");
+	DATA_FORMAT_TYPE format = DOUBLE_POSITION_QUATERNION;
+
+	// scan the sensors and request a record
+	for (int sensorID = 0; sensorID < ATC3DG.m_config.numberSensors; sensorID++)
+	{
+		errorCode = SetSensorParameter(
+			sensorID,			// index number of target sensor
+			DATA_FORMAT,		// command parameter type
+			&format,			// address of data source buffer
+			sizeof(format)		// size of source buffer
+			);
+
+		if (errorCode != BIRD_ERROR_SUCCESS) errorHandler(errorCode);
+	}
+
 	m_connected = true;
 
 	if (m_connected) printf("[EM]:Connected\n");
