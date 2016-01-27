@@ -51,7 +51,9 @@ void* DR::EMHandler::thread_connect()
 		m_lock.unlock();
 		return 0;
 	}
-
+	BOOL metric = true;
+	errorCode = SetSystemParameter(METRIC, &metric, sizeof(metric));
+	if (errorCode != BIRD_ERROR_SUCCESS) errorHandler(errorCode);
 	// GET SYSTEM CONFIGURATION
 	//
 	// In order to get information about the system we have to make a call to
@@ -243,6 +245,7 @@ void DR::EMHandler::getDynamicRecording(pugi::xml_node &frame)
 
 	
 	pugi::xml_node trackSTAR = frame.append_child("TrackSTAR");
+	trackSTAR.append_attribute("Unit").set_value("millimeter");
 	m_lock.lock();
 
 	// Collect data from all birds
@@ -277,9 +280,9 @@ void DR::EMHandler::getDynamicRecording(pugi::xml_node &frame)
 
 			pugi::xml_node position_node = bird_node.append_child();
 			position_node.set_name("Position");
-			position_node.append_attribute("X").set_value(record.x);
-			position_node.append_attribute("Y").set_value(record.y);
-			position_node.append_attribute("Z").set_value(record.z);
+			position_node.append_attribute("X").set_value(record.x*1000.0f);
+			position_node.append_attribute("Y").set_value(record.y*1000.0f);
+			position_node.append_attribute("Z").set_value(record.z*1000.0f);
 
 			pugi::xml_node rotation_node = bird_node.append_child();
 			rotation_node.set_name("Rotation");

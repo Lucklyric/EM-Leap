@@ -126,14 +126,14 @@ void LeapHander::frame(pugi::xml_node &frameNode){
 		pugi::xml_node positionNode = handNode.append_child("position");
 		positionToXml(positionNode, hand.palmPosition());
 		
-		pugi::xml_node normalNode = handNode.append_child("normal");
+		/*pugi::xml_node normalNode = handNode.append_child("normal");
 		positionToXml(normalNode, hand.palmNormal());
 
 		pugi::xml_node directionNode = handNode.append_child("direction");
 		positionToXml(directionNode, hand.direction());
 
 		pugi::xml_node rotationNode = handNode.append_child("basis");
-		rotationToXml(rotationNode, hand.basis());
+		rotationToXml(rotationNode, hand.basis());*/
 		//// Get fingers
 		pugi::xml_node fingerList = handNode.append_child("fingers");
 		const FingerList fingers = hand.fingers();
@@ -159,8 +159,8 @@ void LeapHander::frame(pugi::xml_node &frameNode){
 				pugi::xml_node nextJoint = boneNode.append_child("nextJoint");
 				positionToXml(nextJoint, bone.nextJoint());
 
-				pugi::xml_node rotation = boneNode.append_child("basis");
-				rotationToXml(rotation, bone.basis());
+				/*pugi::xml_node rotation = boneNode.append_child("basis");
+				rotationToXml(rotation, bone.basis());*/
 			}
 		}
 	}
